@@ -1,23 +1,49 @@
+// stores/cardStore.ts
 import { defineStore } from 'pinia'
-import axios from 'axios'
+import { ref } from 'vue'
+import {
+  getAllCards,
+  getMyCards,
+  addCardsToUser,
+  getCardById,
+} from '../services/cardService'
 
-export const useCardStore = defineStore('cards', {
-  state: () => ({
-    myCards: [] as any[]
-  }),
+export const useCardStore = defineStore('cardStore', () => {
+  const myCards = ref<any[]>([])
+  const allCards = ref<any[]>([])
+  const selectedCard = ref(null)
+  const page = ref(1)
+  const rpp = ref(10)
 
-  actions: {
-    async fetchMyCards(token: string) {
-      const res = await axios.get('/cards/my-cards', {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      this.myCards = res.data
-    },
+  const fetchUserCards = async () => {
+    const res = await getMyCards()
+    myCards.value = res.data
+  }
 
-    async addCard(cardData: { name: string; image: string }, token: string) {
-      await axios.post('/cards', cardData, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-    }
+  const fetchAllCards = async () => {
+    const res = await getAllCards(page.value, rpp.value)
+    allCards.value = res.data.cards || res.data
+  }
+
+  const fetchCardById = async (id: string) => {
+    const res = await getCardById(id)
+    selectedCard.value = res.data
+  }
+
+  const addCards = async (cardIds: string[]) => {
+    await addCardsToUser(cardIds)
+    await fetchUserCards()
+  }
+
+  return {
+    myCards,
+    allCards,
+    selectedCard,
+    page,
+    rpp,
+    fetchUserCards,
+    fetchAllCards,
+    fetchCardById,
+    addCards,
   }
 })

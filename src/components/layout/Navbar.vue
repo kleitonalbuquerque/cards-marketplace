@@ -1,28 +1,31 @@
 <template>
   <nav
-    class="bg-gray-800 text-white px-6 py-4 flex justify-between items-center"
+    class="bg-gray-900 text-white px-8 py-4 flex justify-between items-center shadow"
   >
-    <RouterLink to="/" class="text-2xl font-bold text-white"
-      >CardMarket</RouterLink
-    >
+    <RouterLink to="/" class="text-xl font-bold text-blue-400 hover:text-white">
+      CardMarket
+    </RouterLink>
 
-    <div class="flex items-center gap-6 text-sm">
-      <RouterLink to="/marketplace" class="hover:underline"
+    <div class="flex gap-6 text-sm">
+      <RouterLink to="/marketplace" class="hover:text-blue-300"
         >Marketplace</RouterLink
       >
-      <RouterLink to="/create-request" v-if="auth.user" class="hover:underline"
+      <RouterLink
+        to="/create-request"
+        v-if="auth.user"
+        class="hover:text-blue-300"
         >Nova Troca</RouterLink
       >
-      <RouterLink to="/login" v-if="!auth.user" class="hover:underline"
+      <RouterLink to="/login" v-if="!auth.user" class="hover:text-blue-300"
         >Login</RouterLink
       >
-      <RouterLink to="/register" v-if="!auth.user" class="hover:underline"
+      <RouterLink to="/register" v-if="!auth.user" class="hover:text-blue-300"
         >Registrar</RouterLink
       >
       <button
         @click="auth.logout"
         v-if="auth.user"
-        class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm"
+        class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded"
       >
         Sair
       </button>

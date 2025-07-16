@@ -1,37 +1,32 @@
 import { defineStore } from 'pinia'
-import api from '../services/api'
+import { loginUser, registerUser, getMe } from '@/services/userService'
+import { ref } from 'vue'
 
-export const useAuthStore = defineStore('auth', {
-  state: () => ({
-    token: '',
-    user: null as any
-  }),
+export const useAuthStore = defineStore('auth', () => {
+  const user = ref(null)
+  const token = ref(localStorage.getItem('token') || '')
 
-  actions: {
-    async login(email: string, password: string) {
-      const res = await api.post('/login', { email, password })
-      this.token = res.data.token
-    },
-
-    async fetchUser() {
-      const res = await api.get('/me', {
-        headers: { Authorization: `Bearer ${this.token}` }
-      })
-      this.user = res.data
-    },
-
-    async register(name: string, email: string, password: string) {
-      await api.post('/register', { name, email, password })
-    },
-
-    logout() {
-      this.token = ''
-      this.user = null
-    }
-  },
-
-  persist: {
-    storage: localStorage,
-    paths: ['token', 'user']
+  const login = async (email: string, password: string) => {
+    const res = await loginUser({ email, password })
+    token.value = res.data.token
+    localStorage.setItem('token', token.value)
+    await fetchUser()
   }
+
+  const register = async (name: string, email: string, password: string) => {
+    await registerUser({ name, email, password })
+  }
+
+  const fetchUser = async () => {
+    const res = await getMe()
+    user.value = res.data
+  }
+
+  const logout = () => {
+    token.value = ''
+    user.value = null
+    localStorage.removeItem('token')
+  }
+
+  return { user, token, login, register, fetchUser, logout }
 })

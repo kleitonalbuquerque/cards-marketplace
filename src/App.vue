@@ -1,10 +1,10 @@
 <template>
-  <RouterView />
+  <AppLayout>
+    <RouterView />
+  </AppLayout>
 </template>
 
-<script setup lang="ts">
-// Nenhuma importação é necessária aqui
-</script>
+<script setup lang="ts"></script>
 
 <style>
 /* Se quiser, pode colocar um estilo global leve aqui */
