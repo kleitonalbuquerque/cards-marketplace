@@ -1,38 +1,3 @@
-<script setup lang="ts">
-import { ref, onMounted } from "vue";
-import { useCardStore } from "../stores/cardStore";
-import { useAuthStore } from "../stores/authStore";
-import api from "../services/api";
-
-const cardStore = useCardStore();
-const authStore = useAuthStore();
-
-const selectedOffering = ref<string[]>([]);
-const selectedReceiving = ref<string[]>([]);
-const successMessage = ref("");
-
-onMounted(() => {
-  cardStore.fetchAllCards();
-  cardStore.fetchUserCards();
-});
-
-async function createTrade() {
-  const cards = [
-    ...selectedOffering.value.map((id) => ({ cardId: id, type: "OFFERING" })),
-    ...selectedReceiving.value.map((id) => ({ cardId: id, type: "RECEIVING" })),
-  ];
-
-  try {
-    await api.post("/trades", { cards });
-    successMessage.value = "Solicitação de troca criada com sucesso!";
-    selectedOffering.value = [];
-    selectedReceiving.value = [];
-  } catch (error) {
-    console.error("Erro ao criar troca:", error);
-  }
-}
-</script>
-
 <template>
   <div class="p-6 text-white">
     <h1 class="text-2xl font-bold mb-6">Criar Solicitação de Troca</h1>
@@ -89,3 +54,38 @@ async function createTrade() {
     </p>
   </div>
 </template>
+
+<script setup lang="ts">
+import { ref, onMounted } from "vue";
+import { useCardStore } from "../stores/cardStore";
+import { useAuthStore } from "../stores/authStore";
+import api from "../services/api";
+
+const cardStore = useCardStore();
+const authStore = useAuthStore();
+
+const selectedOffering = ref<string[]>([]);
+const selectedReceiving = ref<string[]>([]);
+const successMessage = ref("");
+
+onMounted(() => {
+  cardStore.fetchAllCards();
+  cardStore.fetchUserCards();
+});
+
+async function createTrade() {
+  const cards = [
+    ...selectedOffering.value.map((id) => ({ cardId: id, type: "OFFERING" })),
+    ...selectedReceiving.value.map((id) => ({ cardId: id, type: "RECEIVING" })),
+  ];
+
+  try {
+    await api.post("/trades", { cards });
+    successMessage.value = "Solicitação de troca criada com sucesso!";
+    selectedOffering.value = [];
+    selectedReceiving.value = [];
+  } catch (error) {
+    console.error("Erro ao criar troca:", error);
+  }
+}
+</script>

@@ -1,14 +1,3 @@
-<script setup lang="ts">
-import { onMounted } from "vue";
-import { useCardStore } from "../stores/cardStore";
-
-const cardStore = useCardStore();
-
-onMounted(() => {
-  cardStore.fetchAllCards();
-});
-</script>
-
 <template>
   <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
     <div
@@ -26,3 +15,14 @@ onMounted(() => {
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { onMounted } from "vue";
+import { useCardStore } from "../stores/cardStore";
+
+const cardStore = useCardStore();
+
+onMounted(() => {
+  cardStore.fetchAllCards();
+});
+</script>
