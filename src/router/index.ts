@@ -7,10 +7,10 @@ import Marketplace from '@/pages/Marketplace.vue'
 import CreateRequest from '@/pages/CreateRequest.vue'
 
 const routes = [
-  { path: '/', component: Home },
+  { path: '/', component: Marketplace },
+  { path: '/user', component: Home },
   { path: '/login', component: Login },
   { path: '/register', component: Register },
-  { path: '/marketplace', component: Marketplace },
   {
     path: '/create-request',
     component: CreateRequest,

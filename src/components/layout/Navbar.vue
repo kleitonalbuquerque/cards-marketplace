@@ -7,9 +7,6 @@
     </RouterLink>
 
     <div class="flex gap-6 text-sm">
-      <RouterLink to="/marketplace" class="hover:text-blue-300"
-        >Marketplace</RouterLink
-      >
       <RouterLink
         to="/create-request"
         v-if="auth.user"
@@ -22,12 +19,17 @@
       <RouterLink to="/register" v-if="!auth.user" class="hover:text-blue-300"
         >Registrar</RouterLink
       >
+      <RouterLink to="/user" v-if="auth.user" class="hover:text-blue-300"
+        >Minhas Cartas</RouterLink
+      >
       <button
         @click="auth.logout"
         v-if="auth.user"
         class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded"
       >
-        Sair
+        <RouterLink to="/" v-if="auth.user" class="hover:text-blue-300"
+          >Sair</RouterLink
+        >
       </button>
     </div>
   </nav>

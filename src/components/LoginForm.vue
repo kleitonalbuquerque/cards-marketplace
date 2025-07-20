@@ -27,7 +27,7 @@ const handleLogin = async () => {
   try {
     await authStore.login(email.value, password.value);
     await authStore.fetchUser();
-    router.push("/");
+    router.push("/user");
   } catch (err) {
     alert("Falha no login.");
   }
