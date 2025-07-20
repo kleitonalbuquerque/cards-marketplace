@@ -5,7 +5,7 @@
 
       <div
         v-if="cardStore.allCards?.list?.length"
-        class="grid grid-cols-1 md:grid-cols-3 gap-4"
+        class="grid grid-cols-1 md:grid-cols-3 gap-4 m-4"
       >
         <div
           v-for="card in cardStore.allCards.list"

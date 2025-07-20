@@ -28,5 +28,13 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.removeItem('token')
   }
 
+  // 🔁 Se houver um token salvo, busca o usuário ao carregar a store
+  if (token.value) {
+    fetchUser().catch(() => {
+      // Se o token for inválido, limpa tudo
+      logout()
+    })
+  }
+
   return { user, token, login, register, fetchUser, logout }
 })
