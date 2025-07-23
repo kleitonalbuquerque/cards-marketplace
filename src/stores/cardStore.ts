@@ -12,9 +12,6 @@ export const useCardStore = defineStore('cardStore', () => {
   const myCards = ref<any[]>([])
   const allCards = ref<any[]>([])
   const selectedCard = ref(null)
-  const page = ref(1)
-  const rpp = ref(10)
-  const total = ref(0)
 
   const fetchUserCards = async () => {
     const res = await getMyCards()
@@ -22,10 +19,9 @@ export const useCardStore = defineStore('cardStore', () => {
   }
 
   const fetchAllCards = async () => {
-    const res = await getAllCards(page.value, rpp.value)
+    // Busca todas as cartas do sistema
+    const res = await getAllCards(1, 9999)
     allCards.value = res.data.list || []
-    // Usa o tamanho da lista retornada, pois não há campo total
-    total.value = res.data.list?.length ?? 0
   }
 
   const fetchCardById = async (id: string) => {
@@ -42,9 +38,6 @@ export const useCardStore = defineStore('cardStore', () => {
     myCards,
     allCards,
     selectedCard,
-    page,
-    rpp,
-    total,
     fetchUserCards,
     fetchAllCards,
     fetchCardById,
