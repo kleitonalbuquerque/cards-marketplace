@@ -104,9 +104,12 @@ const selectedOffering = ref<string[]>([]);
 const selectedReceiving = ref<string[]>([]);
 
 const myCards = computed(() => cardStore.myCards || []);
-const allCards = computed(() =>
-  Array.isArray(cardStore.allCards) ? cardStore.allCards : cardStore.allCards.list || []
-);
+const allCards = computed(() => {
+  const mineIds = new Set(myCards.value.map(card => card.id));
+  // Filtra todas as cartas do sistema removendo as que são do usuário
+  const all = Array.isArray(cardStore.allCards) ? cardStore.allCards : cardStore.allCards.list || [];
+  return all.filter(card => !mineIds.has(card.id));
+});
 
 const user = computed(() => authStore.user);
 const userRequests = computed(() =>

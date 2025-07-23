@@ -13,6 +13,12 @@
         class="hover:text-blue-300"
         >Nova Troca</RouterLink
       >
+      <RouterLink
+        to="/requests"
+        v-if="auth.user"
+        class="hover:text-blue-300"
+        >Minhas Solicitações</RouterLink
+      >
       <RouterLink to="/login" v-if="!auth.user" class="hover:text-blue-300"
         >Login</RouterLink
       >

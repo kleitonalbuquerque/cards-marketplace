@@ -5,12 +5,14 @@ import Login from '@/pages/Login.vue'
 import Register from '@/pages/Register.vue'
 import Marketplace from '@/pages/Marketplace.vue'
 import CreateRequest from '@/pages/CreateRequest.vue'
+import Requests from '@/pages/Requests.vue'
 
 const routes = [
   { path: '/', component: Marketplace },
   { path: '/user', component: Home },
   { path: '/login', component: Login },
   { path: '/register', component: Register },
+  { path: '/requests', component: Requests, meta: { requiresAuth: true } },
   {
     path: '/create-request',
     component: CreateRequest,
