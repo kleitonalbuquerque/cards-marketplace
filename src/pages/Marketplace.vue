@@ -1,6 +1,6 @@
 <template>
   <AppLayout>
-    <div class="text-white">
+    <div class="text-white mb-4">
       <h1 class="text-2xl font-bold">Cartas disponíveis para troca</h1>
 
       <div
@@ -26,21 +26,32 @@
         Nenhuma carta disponível para exibir.
       </p>
 
-      <div class="flex justify-center gap-4 mt-4">
-        <button
-          @click="prevPage"
-          :disabled="cardStore.page === 1"
-          class="px-4 py-2 bg-gray-700 rounded text-white"
-        >
-          Anterior
-        </button>
-        <span>Página {{ cardStore.page }}</span>
-        <button
-          @click="nextPage"
-          class="px-4 py-2 bg-gray-700 rounded text-white"
-        >
-          Próxima
-        </button>
+      <div class="flex justify-center gap-4 mt-4 flex-col items-center">
+        <span class="text-black text-sm">
+          Exibindo
+          {{ (cardStore.page - 1) * cardStore.rpp + 1 }}
+          -
+          {{ (cardStore.page - 1) * cardStore.rpp + cards.length }}
+          cartas
+        </span>
+        
+        <div class="flex gap-4 items-center">
+          <button
+            @click="prevPage"
+            :disabled="cardStore.page === 1"
+            class="px-4 py-2 bg-gray-700 rounded text-white"
+          >
+            Anterior
+          </button>
+          <span class="text-black text-sm">Página {{ cardStore.page }}</span>
+          <button
+            @click="nextPage"
+            :disabled="cards.length < cardStore.rpp"
+            class="px-4 py-2 bg-gray-700 rounded text-white"
+          >
+            Próxima
+          </button>
+        </div>
       </div>
     </div>
   </AppLayout>
@@ -53,7 +64,10 @@ import AppLayout from "../components/layout/AppLayout.vue";
 
 const cardStore = useCardStore();
 
-const cards = computed(() => cardStore.allCards?.list || []);
+// Garante que cards seja sempre array
+const cards = computed(() =>
+  Array.isArray(cardStore.allCards) ? cardStore.allCards : cardStore.allCards.list || []
+);
 
 function nextPage() {
   cardStore.page++;
