@@ -83,10 +83,16 @@ const submitExchange = async () => {
   }
 
   try {
-    await exchangeStore.createExchange({
-      offeredCards: selectedOfferedCards.value,
-      requestedCards: selectedRequestedCards.value,
-    })
+    type TradeCard = {
+      cardId: string;
+      type: 'OFFERING' | 'RECEIVING';
+    };
+
+    const tradeCards: TradeCard[] = [
+      ...selectedOfferedCards.value.map(id => ({ cardId: id, type: "OFFERING" as const })),
+      ...selectedRequestedCards.value.map(id => ({ cardId: id, type: "RECEIVING" as const }))
+    ];
+    await exchangeStore.createRequest(tradeCards)
     router.push('/marketplace')
   } catch (err: any) {
     error.value = err.response?.data?.message || 'Erro ao criar troca.'
