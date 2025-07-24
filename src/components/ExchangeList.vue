@@ -40,11 +40,10 @@ import { onMounted, computed } from "vue";
 import { useExchangeStore } from "../stores/exchangeStore";
 import { useAuthStore } from "../stores/authStore";
 
-// Tipos locais
 type TradeCard = {
-  id: string;
+  id?: string;
   cardId: string;
-  tradeId: string;
+  tradeId?: string;
   type: "OFFERING" | "RECEIVING";
   card?: { id: string; name: string; description: string; imageUrl: string; createdAt: string };
 };
@@ -64,21 +63,7 @@ onMounted(() => {
   exchangeStore.fetchRequests();
 });
 
-const trades = computed<Trade[]>(() =>
-  exchangeStore.requests.map((trade: any) => ({
-    id: trade.id,
-    userId: trade.userId,
-    createdAt: trade.createdAt,
-    user: trade.user,
-    tradeCards: trade.tradeCards.map((card: any) => ({
-      id: card.id ?? "",
-      cardId: card.cardId,
-      tradeId: card.tradeId ?? "",
-      type: card.type,
-      card: card.card,
-    })),
-  }))
-);
+const trades = computed<Trade[]>(() => exchangeStore.requests);
 
 const deleteRequest = async (id: string) => {
   await exchangeStore.deleteRequest(id);

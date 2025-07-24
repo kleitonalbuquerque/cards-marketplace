@@ -49,7 +49,7 @@
       </div>
 
       <button
-        @click="createRequest"
+        @click="submitRequest"
         class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
       >
         Enviar Solicitação de Troca
@@ -84,56 +84,51 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useCardStore } from "../stores/cardStore";
 import { useExchangeStore } from "../stores/exchangeStore";
 import { useAuthStore } from "../stores/authStore";
 import { useRouter } from "vue-router";
 import AppLayout from "../components/layout/AppLayout.vue";
 
+type Card = {
+  id: string;
+  name: string;
+  description: string;
+  imageUrl: string;
+  createdAt: string;
+};
+
 const cardStore = useCardStore();
 const exchangeStore = useExchangeStore();
 const authStore = useAuthStore();
 const router = useRouter();
 
+const myCards = computed<Card[]>(() => cardStore.myCards || []);
+const allCards = computed<Card[]>(() =>
+  Array.isArray(cardStore.allCards) ? cardStore.allCards : []
+);
+
 const selectedOffering = ref<string[]>([]);
 const selectedReceiving = ref<string[]>([]);
-
-const myCards = computed(() => cardStore.myCards || []);
-const allCards = computed(() => {
-  const mineIds = new Set(myCards.value.map(card => card.id));
-  const all = Array.isArray(cardStore.allCards) ? cardStore.allCards : cardStore.allCards.list || [];
-  return all.filter(card => !mineIds.has(card.id));
-});
 
 const user = computed(() => authStore.user);
 const userRequests = computed(() =>
   exchangeStore.requests.filter(req => req.userId === user.value?.id)
 );
 
-async function createRequest() {
-  if (!selectedOffering.value.length || !selectedReceiving.value.length) {
-    alert("Você precisa selecionar cartas para oferecer e receber.");
-    return;
-  }
-
-  const cards = [
-    ...selectedOffering.value.map(cardId => ({ cardId, type: "OFFERING" })),
-    ...selectedReceiving.value.map(cardId => ({ cardId, type: "RECEIVING" })),
+async function submitRequest() {
+  const tradeCards = [
+    ...selectedOffering.value.map(id => ({ cardId: id, type: "OFFERING" as "OFFERING" })),
+    ...selectedReceiving.value.map(id => ({ cardId: id, type: "RECEIVING" as "RECEIVING" })),
   ];
-
-  try {
-    await exchangeStore.createRequest(cards, authStore.token);
-    alert("Solicitação criada com sucesso!");
-    router.push("/requests");
-  } catch (e) {
-    alert("Erro ao criar solicitação.");
-  }
+  await exchangeStore.createRequest(tradeCards);
+  router.push("/requests");
 }
 
 async function cancelRequest(id: string) {
   if (confirm("Deseja cancelar esta solicitação?")) {
-    await exchangeStore.deleteRequest(id, authStore.token);
+    await exchangeStore.deleteRequest(id);
     await exchangeStore.fetchRequests();
   }
 }
