@@ -6,7 +6,6 @@ const api = axios.create({
   baseURL: 'https://cards-marketplace-api-2fjj.onrender.com',
 })
 
-// Adiciona o token automaticamente
 api.interceptors.request.use((config) => {
   const authStore = useAuthStore()
   const token = authStore.token

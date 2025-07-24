@@ -6,7 +6,6 @@
     >
       <h2 class="text-2xl font-bold text-center">Nova Solicitação de Troca</h2>
 
-      <!-- Cartas que o usuário vai oferecer -->
       <div>
         <label class="block mb-1 text-sm font-medium">Escolha cartas para oferecer:</label>
         <select
@@ -24,7 +23,6 @@
         </select>
       </div>
 
-      <!-- Cartas que o usuário quer receber -->
       <div>
         <label class="block mb-1 text-sm font-medium">Escolha cartas desejadas:</label>
         <select
@@ -42,7 +40,6 @@
         </select>
       </div>
 
-      <!-- Botão -->
       <button
         type="submit"
         class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded font-semibold"

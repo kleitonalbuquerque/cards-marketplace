@@ -1,4 +1,3 @@
-// services/cardService.ts
 import api from './api'
 
 export const getAllCards = (page = 1, rpp = 10) =>

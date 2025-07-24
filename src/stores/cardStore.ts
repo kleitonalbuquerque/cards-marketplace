@@ -1,4 +1,3 @@
-// stores/cardStore.ts
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import {
@@ -19,7 +18,6 @@ export const useCardStore = defineStore('cardStore', () => {
   }
 
   const fetchAllCards = async () => {
-    // Busca todas as cartas do sistema
     const res = await getAllCards(1, 9999)
     allCards.value = res.data.list || []
   }

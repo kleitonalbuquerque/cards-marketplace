@@ -2,8 +2,6 @@
   <AppLayout>
     <div class="space-y-6">
       <h1 class="text-2xl font-bold mb-4">Nova Troca</h1>
-
-      <!-- Suas Cartas -->
       <div>
         <h2 class="font-semibold mb-2">Cartas que você está oferecendo</h2>
         <div v-if="myCards.length" class="space-y-2">
@@ -28,7 +26,6 @@
 
       <div class="divider-solid"></div>
 
-      <!-- Cartas desejadas (todas do sistema) -->
       <div>
         <h2 class="font-semibold mb-2">Cartas que você deseja receber</h2>
         <div v-if="allCards.length" class="space-y-2 max-h-64 overflow-y-auto">
@@ -58,7 +55,6 @@
         Enviar Solicitação de Troca
       </button>
 
-      <!-- Suas solicitações de troca -->
       <div class="mt-8">
         <h2 class="font-semibold mb-2">Suas solicitações de troca</h2>
         <div v-if="userRequests.length">
@@ -106,7 +102,6 @@ const selectedReceiving = ref<string[]>([]);
 const myCards = computed(() => cardStore.myCards || []);
 const allCards = computed(() => {
   const mineIds = new Set(myCards.value.map(card => card.id));
-  // Filtra todas as cartas do sistema removendo as que são do usuário
   const all = Array.isArray(cardStore.allCards) ? cardStore.allCards : cardStore.allCards.list || [];
   return all.filter(card => !mineIds.has(card.id));
 });
